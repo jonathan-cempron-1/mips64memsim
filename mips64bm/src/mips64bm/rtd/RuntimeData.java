@@ -11,6 +11,7 @@ import mips64bm.gui.*;
  * @author jonats
  */
 public class RuntimeData {
+       
     public RuntimeData(){
         new FrmWindow1(this);
     }

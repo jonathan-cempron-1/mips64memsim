@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package mips64bm.gui;
+import java.io.File;
+import javax.swing.JFileChooser;
 import mips64bm.rtd.*;
 
 /**
@@ -90,6 +92,11 @@ public class PnlMemSim extends javax.swing.JPanel {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton3.setText("upload");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -600,6 +607,20 @@ public class PnlMemSim extends javax.swing.JPanel {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            String selectedFileName = selectedFile.getAbsolutePath();
+            String contents = new PreProcessor().getPreProcessed(selectedFileName);
+            jTextArea1.setText(contents);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
