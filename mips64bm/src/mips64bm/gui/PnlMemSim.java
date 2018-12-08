@@ -5,7 +5,9 @@
  */
 package mips64bm.gui;
 import java.io.File;
+import java.util.LinkedList;
 import javax.swing.JFileChooser;
+import javax.swing.table.TableModel;
 import mips64bm.rtd.*;
 
 /**
@@ -21,8 +23,54 @@ public class PnlMemSim extends javax.swing.JPanel {
     public PnlMemSim(RuntimeData rtd) {
         initComponents();
         this.rtd = rtd;
+        jButton1.setEnabled(false);
+        jButton2.setEnabled(false);
+        updateInternals();
     }
 
+    public void updateInternals(){
+        //if
+        jLabel2.setText(rtd.ifIdIr);
+        jLabel5.setText(rtd.ifIdNpc);
+        jLabel6.setText(rtd.pc);
+        //id
+        jLabel12.setText(rtd.idExA);
+        jLabel13.setText(rtd.idExB);
+        jLabel14.setText(rtd.idExNpc);
+        jLabel15.setText(rtd.idExIr);
+        jLabel16.setText(rtd.idExImm);
+        ///ex
+        jLabel21.setText(rtd.exMemIr);
+        jLabel22.setText(rtd.exMemAluOut);
+        jLabel23.setText(rtd.exMemCond);
+        jLabel24.setText(rtd.exMemB);
+        //mem
+        jLabel29.setText(rtd.memWdIr);
+        jLabel30.setText(rtd.memWbLmd);
+        jLabel31.setText(rtd.memExMemAluOut);
+        jLabel32.setText(rtd.memWbAluOut);
+        //wb
+        jLabel34.setText(rtd.regsMemWbIr);
+    }
+    
+    public LinkedList<String[]> combineLabelTable(LinkedList<String[]> ds, LinkedList<String[]> cs){
+        LinkedList<String[]> ret = new LinkedList<String[]>();
+        for(int i =0; i < ds.size(); i++){
+            String label = ds.get(i)[0];
+            String address = ds.get(i)[1];
+            address = Integer.toHexString(Integer.parseInt(address));
+            String[] tmp = {label, address};
+            ret.add(tmp);
+        }
+        for(int i =0; i < cs.size(); i++){
+            String label = cs.get(i)[0];
+            String address = cs.get(i)[1];
+            address = Integer.toHexString(Integer.parseInt(address));
+            String[] tmp = {label, address};
+            ret.add(tmp);
+        }
+        return ret;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -120,41 +168,41 @@ public class PnlMemSim extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"R0", null, null},
-                {"R1", null, null},
-                {"R2", null, null},
-                {"R3", null, null},
-                {"R4", null, null},
-                {"R5", null, null},
-                {"R6", null, null},
-                {"R7", null, null},
-                {"R8", null, null},
-                {"R9", null, null},
-                {"R10", null, null},
-                {"R11", null, null},
-                {"R12", null, null},
-                {"R13", null, null},
-                {"R14", null, null},
-                {"R15", null, null},
-                {"R16", null, null},
-                {"R17", null, null},
-                {"R18", null, null},
-                {"R19", null, null},
-                {"R20", null, null},
-                {"R21", null, null},
-                {"R22", null, null},
-                {"R23", null, null},
-                {"R24", null, null},
-                {"R25", null, null},
-                {"R26", null, null},
-                {"R27", null, null},
-                {"R28", null, null},
-                {"R29", null, null},
-                {"R30", null, null},
-                {"R31", null, null}
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Register", "Content HEX", "Content BIN"
+
             }
         ));
         jScrollPane2.setViewportView(jTable1);
@@ -175,6 +223,11 @@ public class PnlMemSim extends javax.swing.JPanel {
         jButton1.setText("run all");
 
         jButton2.setText("run one cycle");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("IF"));
 
@@ -468,109 +521,109 @@ public class PnlMemSim extends javax.swing.JPanel {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Label", "Address", "Content HEX", "Content BIN"
+
             }
         ));
         jScrollPane3.setViewportView(jTable2);
@@ -579,7 +632,9 @@ public class PnlMemSim extends javax.swing.JPanel {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -593,11 +648,11 @@ public class PnlMemSim extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -610,6 +665,7 @@ public class PnlMemSim extends javax.swing.JPanel {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        // note data segment format is label: hexval which is 1 byte always
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this);
@@ -619,8 +675,159 @@ public class PnlMemSim extends javax.swing.JPanel {
             String selectedFileName = selectedFile.getAbsolutePath();
             String contents = new PreProcessor().getPreProcessed(selectedFileName);
             jTextArea1.setText(contents);
+            String cont[] = contents.split("\n");
+            LinkedList<String[]> sepcd = rtd.bto.getSeparatedSegments(cont);
+            String[] codeSegSrc = sepcd.get(1);
+            String[] datSegSrc = sepcd.get(0);
+            int lends = rtd.bto.getDSLen(datSegSrc);
+            int cstart = lends;
+            LinkedList<String[]> labelTableDS = rtd.bto.getLabelTableDS(datSegSrc);            
+            LinkedList<String[]> labelTableCS = rtd.bto.getLabelTableCS(codeSegSrc, lends);
+            LinkedList<String[]> labelTable = combineLabelTable(labelTableDS, labelTableCS);
+            LinkedList<String[]> progBytes = rtd.bto.getProgramBytes(datSegSrc, codeSegSrc, labelTable);
+            LinkedList<String[]> instrxnTable = rtd.bto.getInstrxnTable(codeSegSrc, cstart);
+            System.out.println("label table");
+            for(int i = 0; i < labelTable.size(); i++)
+                System.out.println(labelTable.get(i)[1] + " " + labelTable.get(i)[0]);
+            System.out.println("prog bytes");
+            for(int i = 0; i < progBytes.size(); i++)
+                System.out.println(progBytes.get(i)[1] +" "+ progBytes.get(i)[0]);
+            System.out.println("instrxnTable");
+            for(int i = 0; i < instrxnTable.size(); i++)
+                System.out.println(instrxnTable.get(i)[1] + " "+ instrxnTable.get(i)[0]);
+            rtd.initMem(labelTable, progBytes, instrxnTable);
+            jTable2.setModel(rtd.updateMemDisplay());
+            jTable1.setModel(rtd.updateRegsDisplay());
+            jButton2.setEnabled(true);
+            rtd.pc =  Integer.toHexString(cstart);
+            updateInternals();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    public void updateTableDisplay(){
+        jTable2.setModel(rtd.updateMemDisplay());
+        jTable1.setModel(rtd.updateRegsDisplay());
+    }
+    
+    private String getAluOut(String rs, String rt, String operation){
+        String ret = "";
+        int ans = 0;
+        int irs = Integer.parseInt(rs, 16);
+        int irt = Integer.parseInt(rt, 16);
+        if(operation.equalsIgnoreCase("DADDU") || operation.equalsIgnoreCase("DADDIU"))
+            ans = irs + irt;
+        else if(operation.equalsIgnoreCase("DSUBU"))
+            ans = irs - irt;
+        ret = Integer.toHexString(ans);
+        for(int i = ret.length(); i < 16; i++)
+            ret = "0" + ret;
+        //System.out.println(ret);
+        return ret;
+    }
+    
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        //IF
+        rtd.ifIdIr = rtd.getMemContent(rtd.pc, 4);
+        String ib = rtd.bto.cvtHexToBin(rtd.exMemIr);
+        if(ib.length() > 1)
+            ib = rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0,6);
+        boolean isBranch = rtd.bto.getOpcodeOperationType(ib).equalsIgnoreCase("branch");
+        if(isBranch && rtd.exMemCond.equalsIgnoreCase("1")){
+            rtd.ifIdNpc = rtd.exMemAluOut;
+            rtd.pc = rtd.ifIdNpc;
+        }else{
+            int newPc = Integer.parseInt(rtd.pc, 16) + 4;
+            rtd.ifIdNpc = Integer.toHexString(newPc);
+            rtd.pc = rtd.ifIdNpc;
+        }
+        //ID
+        String rs = rtd.getRegContent(rtd.bto.cvtHexToBin(rtd.ifIdIr).substring(6,11));
+        String rt = rtd.getRegContent(rtd.bto.cvtHexToBin(rtd.ifIdIr).substring(11,16));
+        //System.out.println(rs);
+        //System.out.println(rt);
+        rtd.idExA = rs;
+        rtd.idExB = rt;
+        rtd.idExNpc = rtd.ifIdNpc;
+        rtd.idExIr = rtd.ifIdIr;
+        String imm = rtd.bto.cvtHexToBin(rtd.ifIdIr).substring(16,32);
+        for(int i = imm.length(); i < 64; i++)
+            imm = imm.substring(0,1)+imm;
+        rtd.idExImm = rtd.bto.cvtBinToHex(imm);
+        //EX
+        rtd.exMemIr = rtd.idExIr;
+        String ie = rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0,6);
+        //System.out.println(ie);
+        if(rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("alu")){
+            //System.out.println("alu");
+            if(rtd.bto.getOpcodeType(ie).equalsIgnoreCase("r")){
+                //System.out.println("r");
+                String func = rtd.bto.getFuncFunc(rtd.bto.cvtHexToBin(rtd.exMemIr).substring(26, 32));
+                rtd.exMemAluOut = getAluOut(rtd.idExA, rtd.idExB, func);
+            }else if(rtd.bto.getOpcodeType(ie).equalsIgnoreCase("i")){
+                //System.out.println("i");
+                String operator = rtd.bto.getBinOperator(rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0, 6));
+                rtd.exMemAluOut = getAluOut(rtd.idExA, rtd.idExImm, operator);
+            }
+        } else if(rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("ls")){
+            //System.out.println("ls");
+            rtd.exMemAluOut = getAluOut(rtd.idExA, rtd.idExImm, "DADDU");
+            rtd.exMemB = rtd.idExB;
+        } else if(rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("branch")){
+            //System.out.println("branch");
+            if(rtd.bto.getOpcodeType(ie).equalsIgnoreCase("j")){
+                rtd.exMemAluOut = getAluOut(rtd.idExNpc, rtd.idExImm+"00", "DADDU");
+            }else if(rtd.bto.getOpcodeType(ie).equalsIgnoreCase("b")){
+                rtd.exMemCond = (rtd.idExA.equalsIgnoreCase("0000000000000000")) ? "1" : "0";
+            }
+        }
+        //MEM
+        rtd.memWdIr = rtd.exMemIr;
+        String im = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6);
+        System.out.println(im);
+        if(rtd.bto.getOpcodeOperationType(im).equalsIgnoreCase("alu")){
+            System.out.println("alu");
+            rtd.memWbAluOut = rtd.exMemAluOut;
+        } else if(rtd.bto.getOpcodeOperationType(im).equalsIgnoreCase("ls")){
+            System.out.println("ls");
+            String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6)).substring(0,1);
+            String operatorSc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6)).substring(1,2);
+            int width = rtd.bto.getWidth(operatorSc);
+            System.out.println(operatorFc);
+            if(operatorFc.equalsIgnoreCase("L")){
+                rtd.memWbLmd = rtd.bto.zeroExtend64(rtd.getMemContent(rtd.exMemAluOut, width));
+            }else if(operatorFc.equalsIgnoreCase("S")){
+                rtd.memExMemAluOut = rtd.exMemB;
+                rtd.setMemContent(rtd.exMemAluOut, width, rtd.exMemB);
+            }
+        }        
+        //WB
+        rtd.memWdIr = rtd.exMemIr;
+        String iw = rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0,6);
+        String rdref = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(16,16+5);
+        String rtref = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(11,11+5);
+        //System.out.println(ie);
+        if(rtd.bto.getOpcodeOperationType(iw).equalsIgnoreCase("alu")){
+            //System.out.println("alu");
+            if(rtd.bto.getOpcodeType(iw).equalsIgnoreCase("r")){
+                rtd.setRegContent(rdref, rtd.memWbAluOut);
+            }else if(rtd.bto.getOpcodeType(iw).equalsIgnoreCase("i")){
+                rtd.setRegContent(rtref, rtd.memWbAluOut);
+            }
+        } else if(rtd.bto.getOpcodeOperationType(iw).equalsIgnoreCase("ls")){
+            System.out.println("ls");
+            String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6)).substring(0,1);
+            String operatorSc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6)).substring(1,2);
+            int width = rtd.bto.getWidth(operatorSc);
+            System.out.println(operatorFc);
+            if(operatorFc.equalsIgnoreCase("L")){
+                rtd.setRegContent(rtref, rtd.memWbLmd);
+            }
+            
+        } 
+        updateInternals();
+        updateTableDisplay();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

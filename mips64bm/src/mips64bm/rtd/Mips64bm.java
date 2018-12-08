@@ -16,7 +16,7 @@ public class Mips64bm {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        //new RuntimeData();
+        new RuntimeData();
         System.out.println(new BitOps().cvtBinToHex("0101"));
         System.out.println(new BitOps().cvtHexToBin("ABA"));
         System.out.println(new BitOps().getRxBin("r1"));
@@ -26,7 +26,8 @@ public class Mips64bm {
         System.out.println(new BitOps().getOperatorFunc("DADDU"));
         System.out.println(new BitOps().getFuncOperator("101111"));
         System.out.println(new BitOps().getOperatorType("DADDU"));
-        System.out.println(new BitOps().getOpcodeType("000000"));
+        //System.out.println(new BitOps().getInstrxnOpcodeHex("DADDU    r1,   r2,   r3"));
+        //System.out.println(new BitOps().getInstrxnOpcodeHex("DADDIU    r1,   r2,   01"));
         
     }
     

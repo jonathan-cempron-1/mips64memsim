@@ -132,11 +132,13 @@ public class PreProcessor {
         String secondPass = "";
         String[] argArr = arg.split("\n");
         int csegStart = 0;
+        /**
         for (int i = 0; i < argArr.length; i++) {
             if (argArr[i].equals(".code")) {
                 csegStart = i;
             }
         }
+        **/
         for (int i = 0; i < argArr.length; i++) {
             if (i > csegStart) {
                 firstPass = firstPass + handleLabeledLine(argArr[i]) + "\n";
