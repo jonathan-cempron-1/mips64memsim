@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package mips64bm.gui;
+
 import java.io.File;
 import java.util.LinkedList;
 import javax.swing.JFileChooser;
@@ -17,6 +18,7 @@ import mips64bm.rtd.*;
 public class PnlMemSim extends javax.swing.JPanel {
 
     RuntimeData rtd;
+
     /**
      * Creates new form PnlMemSim
      */
@@ -28,7 +30,7 @@ public class PnlMemSim extends javax.swing.JPanel {
         updateInternals();
     }
 
-    public void updateInternals(){
+    public void updateInternals() {
         //if
         jLabel2.setText(rtd.ifIdIr);
         jLabel5.setText(rtd.ifIdNpc);
@@ -52,17 +54,17 @@ public class PnlMemSim extends javax.swing.JPanel {
         //wb
         jLabel34.setText(rtd.regsMemWbIr);
     }
-    
-    public LinkedList<String[]> combineLabelTable(LinkedList<String[]> ds, LinkedList<String[]> cs){
+
+    public LinkedList<String[]> combineLabelTable(LinkedList<String[]> ds, LinkedList<String[]> cs) {
         LinkedList<String[]> ret = new LinkedList<String[]>();
-        for(int i =0; i < ds.size(); i++){
+        for (int i = 0; i < ds.size(); i++) {
             String label = ds.get(i)[0];
             String address = ds.get(i)[1];
             address = Integer.toHexString(Integer.parseInt(address));
             String[] tmp = {label, address};
             ret.add(tmp);
         }
-        for(int i =0; i < cs.size(); i++){
+        for (int i = 0; i < cs.size(); i++) {
             String label = cs.get(i)[0];
             String address = cs.get(i)[1];
             address = Integer.toHexString(Integer.parseInt(address));
@@ -71,6 +73,7 @@ public class PnlMemSim extends javax.swing.JPanel {
         }
         return ret;
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -671,7 +674,7 @@ public class PnlMemSim extends javax.swing.JPanel {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+            //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             String selectedFileName = selectedFile.getAbsolutePath();
             String contents = new PreProcessor().getPreProcessed(selectedFileName);
             jTextArea1.setText(contents);
@@ -681,152 +684,169 @@ public class PnlMemSim extends javax.swing.JPanel {
             String[] datSegSrc = sepcd.get(0);
             int lends = rtd.bto.getDSLen(datSegSrc);
             int cstart = lends;
-            LinkedList<String[]> labelTableDS = rtd.bto.getLabelTableDS(datSegSrc);            
+            LinkedList<String[]> labelTableDS = rtd.bto.getLabelTableDS(datSegSrc);
             LinkedList<String[]> labelTableCS = rtd.bto.getLabelTableCS(codeSegSrc, lends);
             LinkedList<String[]> labelTable = combineLabelTable(labelTableDS, labelTableCS);
             LinkedList<String[]> progBytes = rtd.bto.getProgramBytes(datSegSrc, codeSegSrc, labelTable);
             LinkedList<String[]> instrxnTable = rtd.bto.getInstrxnTable(codeSegSrc, cstart);
-            System.out.println("label table");
-            for(int i = 0; i < labelTable.size(); i++)
-                System.out.println(labelTable.get(i)[1] + " " + labelTable.get(i)[0]);
-            System.out.println("prog bytes");
-            for(int i = 0; i < progBytes.size(); i++)
-                System.out.println(progBytes.get(i)[1] +" "+ progBytes.get(i)[0]);
-            System.out.println("instrxnTable");
-            for(int i = 0; i < instrxnTable.size(); i++)
-                System.out.println(instrxnTable.get(i)[1] + " "+ instrxnTable.get(i)[0]);
+            //System.out.println("label table");
+            for (int i = 0; i < labelTable.size(); i++) {
+                //System.out.println(labelTable.get(i)[1] + " " + labelTable.get(i)[0]);
+            }
+            //System.out.println("prog bytes");
+            for (int i = 0; i < progBytes.size(); i++) {
+                //System.out.println(progBytes.get(i)[1] + " " + progBytes.get(i)[0]);
+            }
+            //System.out.println("instrxnTable");
+            for (int i = 0; i < instrxnTable.size(); i++) {
+                //System.out.println(instrxnTable.get(i)[1] + " " + instrxnTable.get(i)[0]);
+            }
             rtd.initMem(labelTable, progBytes, instrxnTable);
             jTable2.setModel(rtd.updateMemDisplay());
             jTable1.setModel(rtd.updateRegsDisplay());
             jButton2.setEnabled(true);
-            rtd.pc =  Integer.toHexString(cstart);
+            rtd.pc = Integer.toHexString(cstart);
             updateInternals();
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    public void updateTableDisplay(){
+    public void updateTableDisplay() {
         jTable2.setModel(rtd.updateMemDisplay());
         jTable1.setModel(rtd.updateRegsDisplay());
     }
-    
-    private String getAluOut(String rs, String rt, String operation){
+
+    private String getAluOut(String rs, String rt, String operation) {
         String ret = "";
         int ans = 0;
         int irs = Integer.parseInt(rs, 16);
         int irt = Integer.parseInt(rt, 16);
-        if(operation.equalsIgnoreCase("DADDU") || operation.equalsIgnoreCase("DADDIU"))
+        if (operation.equalsIgnoreCase("DADDU") || operation.equalsIgnoreCase("DADDIU")) {
             ans = irs + irt;
-        else if(operation.equalsIgnoreCase("DSUBU"))
+        } else if (operation.equalsIgnoreCase("DSUBU")) {
             ans = irs - irt;
+        }
         ret = Integer.toHexString(ans);
-        for(int i = ret.length(); i < 16; i++)
+        for (int i = ret.length(); i < 16; i++) {
             ret = "0" + ret;
-        //System.out.println(ret);
+        }
+        ////System.out.println(ret);
         return ret;
     }
-    
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         //IF
         rtd.ifIdIr = rtd.getMemContent(rtd.pc, 4);
-        String ib = rtd.bto.cvtHexToBin(rtd.exMemIr);
-        if(ib.length() > 1)
-            ib = rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0,6);
+        String ib = rtd.bto.cvtHexToBin(rtd.PrevExMemIr);
+        if (ib.length() > 1) {
+            ib = rtd.bto.cvtHexToBin(rtd.PrevExMemIr).substring(0, 6);
+        }
         boolean isBranch = rtd.bto.getOpcodeOperationType(ib).equalsIgnoreCase("branch");
-        if(isBranch && rtd.exMemCond.equalsIgnoreCase("1")){
-            rtd.ifIdNpc = rtd.exMemAluOut;
+        if (isBranch && rtd.PrevExMemCond.equalsIgnoreCase("1")) {
+            rtd.ifIdNpc = rtd.PrevExMemAluOut;
             rtd.pc = rtd.ifIdNpc;
-        }else{
+        } else {
             int newPc = Integer.parseInt(rtd.pc, 16) + 4;
             rtd.ifIdNpc = Integer.toHexString(newPc);
             rtd.pc = rtd.ifIdNpc;
         }
         //ID
-        String rs = rtd.getRegContent(rtd.bto.cvtHexToBin(rtd.ifIdIr).substring(6,11));
-        String rt = rtd.getRegContent(rtd.bto.cvtHexToBin(rtd.ifIdIr).substring(11,16));
-        //System.out.println(rs);
-        //System.out.println(rt);
-        rtd.idExA = rs;
-        rtd.idExB = rt;
-        rtd.idExNpc = rtd.ifIdNpc;
-        rtd.idExIr = rtd.ifIdIr;
-        String imm = rtd.bto.cvtHexToBin(rtd.ifIdIr).substring(16,32);
-        for(int i = imm.length(); i < 64; i++)
-            imm = imm.substring(0,1)+imm;
-        rtd.idExImm = rtd.bto.cvtBinToHex(imm);
-        //EX
-        rtd.exMemIr = rtd.idExIr;
-        String ie = rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0,6);
-        //System.out.println(ie);
-        if(rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("alu")){
-            //System.out.println("alu");
-            if(rtd.bto.getOpcodeType(ie).equalsIgnoreCase("r")){
-                //System.out.println("r");
-                String func = rtd.bto.getFuncFunc(rtd.bto.cvtHexToBin(rtd.exMemIr).substring(26, 32));
-                rtd.exMemAluOut = getAluOut(rtd.idExA, rtd.idExB, func);
-            }else if(rtd.bto.getOpcodeType(ie).equalsIgnoreCase("i")){
-                //System.out.println("i");
-                String operator = rtd.bto.getBinOperator(rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0, 6));
-                rtd.exMemAluOut = getAluOut(rtd.idExA, rtd.idExImm, operator);
+        if (!rtd.PrevIfIdIr.equalsIgnoreCase("")) {
+            String rs = rtd.getRegContent(rtd.bto.cvtHexToBin(rtd.PrevIfIdIr).substring(6, 11));
+            String rt = rtd.getRegContent(rtd.bto.cvtHexToBin(rtd.PrevIfIdIr).substring(11, 16));
+            ////System.out.println(rs);
+            ////System.out.println(rt);
+            rtd.idExA = rs;
+            rtd.idExB = rt;
+            rtd.idExNpc = rtd.PrevIfIdNpc;
+            rtd.idExIr = rtd.PrevIfIdIr;
+            String imm = rtd.bto.cvtHexToBin(rtd.PrevIfIdIr).substring(16, 32);
+            for (int i = imm.length(); i < 64; i++) {
+                imm = imm.substring(0, 1) + imm;
             }
-        } else if(rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("ls")){
-            //System.out.println("ls");
-            rtd.exMemAluOut = getAluOut(rtd.idExA, rtd.idExImm, "DADDU");
-            rtd.exMemB = rtd.idExB;
-        } else if(rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("branch")){
-            //System.out.println("branch");
-            if(rtd.bto.getOpcodeType(ie).equalsIgnoreCase("j")){
-                rtd.exMemAluOut = getAluOut(rtd.idExNpc, rtd.idExImm+"00", "DADDU");
-            }else if(rtd.bto.getOpcodeType(ie).equalsIgnoreCase("b")){
-                rtd.exMemCond = (rtd.idExA.equalsIgnoreCase("0000000000000000")) ? "1" : "0";
+            rtd.idExImm = rtd.bto.cvtBinToHex(imm);
+            //EX
+            if (!rtd.PrevIdExIr.equalsIgnoreCase("")) {
+                rtd.exMemIr = rtd.PrevIdExIr;
+                String ie = rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0, 6);
+                ////System.out.println(ie);
+                if (rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("alu")) {
+                    ////System.out.println("alu");
+                    if (rtd.bto.getOpcodeType(ie).equalsIgnoreCase("r")) {
+                        ////System.out.println("r");
+                        String func = rtd.bto.getFuncFunc(rtd.bto.cvtHexToBin(rtd.exMemIr).substring(26, 32));
+                        rtd.exMemAluOut = getAluOut(rtd.PrevIdExA, rtd.PrevIdExB, func);
+                    } else if (rtd.bto.getOpcodeType(ie).equalsIgnoreCase("i")) {
+                        ////System.out.println("i");
+                        String operator = rtd.bto.getBinOperator(rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0, 6));
+                        rtd.exMemAluOut = getAluOut(rtd.PrevIdExA, rtd.PrevIdExImm, operator);
+                    }
+                } else if (rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("ls")) {
+                    ////System.out.println("ls");
+                    rtd.exMemAluOut = getAluOut(rtd.PrevIdExA, rtd.PrevIdExImm, "DADDU");
+                    rtd.exMemB = rtd.PrevIdExB;
+                } else if (rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("branch")) {
+                    ////System.out.println("branch");
+                    if (rtd.bto.getOpcodeType(ie).equalsIgnoreCase("j")) {
+                        rtd.exMemAluOut = getAluOut(rtd.PrevIdExNpc, rtd.PrevIdExImm + "00", "DADDU");
+                    } else if (rtd.bto.getOpcodeType(ie).equalsIgnoreCase("b")) {
+                        rtd.exMemCond = (rtd.PrevIdExA.equalsIgnoreCase("0000000000000000")) ? "1" : "0";
+                    }
+                }
+                //MEM
+                if (!rtd.PrevExMemIr.equalsIgnoreCase("")) {
+                    rtd.memWdIr = rtd.PrevExMemIr;
+                    String im = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0, 6);
+                    //System.out.println(im);
+                    if (rtd.bto.getOpcodeOperationType(im).equalsIgnoreCase("alu")) {
+                        //System.out.println("alu");
+                        rtd.memWbAluOut = rtd.PrevExMemAluOut;
+                    } else if (rtd.bto.getOpcodeOperationType(im).equalsIgnoreCase("ls")) {
+                        //System.out.println("ls");
+                        String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0, 6)).substring(0, 1);
+                        String operatorSc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0, 6)).substring(1, 2);
+                        int width = rtd.bto.getWidth(operatorSc);
+                        //System.out.println(operatorFc);
+                        if (operatorFc.equalsIgnoreCase("L")) {
+                            rtd.memWbLmd = rtd.bto.zeroExtend64(rtd.getMemContent(rtd.PrevExMemAluOut, width));
+                        } else if (operatorFc.equalsIgnoreCase("S")) {
+                            rtd.memExMemAluOut = rtd.PrevExMemB;
+                            rtd.setMemContent(rtd.PrevExMemAluOut, width, rtd.PrevExMemB);
+                        }
+                    }
+                    //WB
+                    if (!rtd.PrevExMemIr.equalsIgnoreCase("")) {
+                        rtd.memWdIr = rtd.PrevExMemIr;
+                        String iw = rtd.bto.cvtHexToBin(rtd.PrevExMemIr).substring(0, 6);
+                        String rdref = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(16, 16 + 5);
+                        String rtref = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(11, 11 + 5);
+                        ////System.out.println(ie);
+                        if (rtd.bto.getOpcodeOperationType(iw).equalsIgnoreCase("alu")) {
+                            ////System.out.println("alu");
+                            if (rtd.bto.getOpcodeType(iw).equalsIgnoreCase("r")) {
+                                rtd.setRegContent(rdref, rtd.PrevMemWbAluOut);
+                            } else if (rtd.bto.getOpcodeType(iw).equalsIgnoreCase("i")) {
+                                rtd.setRegContent(rtref, rtd.PrevMemWbAluOut);
+                            }
+                            rtd.regsMemWbIr = rtd.PrevMemWbAluOut;
+                        } else if (rtd.bto.getOpcodeOperationType(iw).equalsIgnoreCase("ls")) {
+                            //System.out.println("ls");
+                            String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0, 6)).substring(0, 1);
+                            String operatorSc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0, 6)).substring(1, 2);
+                            int width = rtd.bto.getWidth(operatorSc);
+                            //System.out.println(operatorFc);
+                            if (operatorFc.equalsIgnoreCase("L")) {
+                                rtd.setRegContent(rtref, rtd.PrevMemWbLmd);
+                                rtd.regsMemWbIr = rtd.PrevMemWbAluOut;
+                            }
+                        }
+                    }
+                }
             }
         }
-        //MEM
-        rtd.memWdIr = rtd.exMemIr;
-        String im = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6);
-        System.out.println(im);
-        if(rtd.bto.getOpcodeOperationType(im).equalsIgnoreCase("alu")){
-            System.out.println("alu");
-            rtd.memWbAluOut = rtd.exMemAluOut;
-        } else if(rtd.bto.getOpcodeOperationType(im).equalsIgnoreCase("ls")){
-            System.out.println("ls");
-            String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6)).substring(0,1);
-            String operatorSc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6)).substring(1,2);
-            int width = rtd.bto.getWidth(operatorSc);
-            System.out.println(operatorFc);
-            if(operatorFc.equalsIgnoreCase("L")){
-                rtd.memWbLmd = rtd.bto.zeroExtend64(rtd.getMemContent(rtd.exMemAluOut, width));
-            }else if(operatorFc.equalsIgnoreCase("S")){
-                rtd.memExMemAluOut = rtd.exMemB;
-                rtd.setMemContent(rtd.exMemAluOut, width, rtd.exMemB);
-            }
-        }        
-        //WB
-        rtd.memWdIr = rtd.exMemIr;
-        String iw = rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0,6);
-        String rdref = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(16,16+5);
-        String rtref = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(11,11+5);
-        //System.out.println(ie);
-        if(rtd.bto.getOpcodeOperationType(iw).equalsIgnoreCase("alu")){
-            //System.out.println("alu");
-            if(rtd.bto.getOpcodeType(iw).equalsIgnoreCase("r")){
-                rtd.setRegContent(rdref, rtd.memWbAluOut);
-            }else if(rtd.bto.getOpcodeType(iw).equalsIgnoreCase("i")){
-                rtd.setRegContent(rtref, rtd.memWbAluOut);
-            }
-        } else if(rtd.bto.getOpcodeOperationType(iw).equalsIgnoreCase("ls")){
-            System.out.println("ls");
-            String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6)).substring(0,1);
-            String operatorSc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0,6)).substring(1,2);
-            int width = rtd.bto.getWidth(operatorSc);
-            System.out.println(operatorFc);
-            if(operatorFc.equalsIgnoreCase("L")){
-                rtd.setRegContent(rtref, rtd.memWbLmd);
-            }
-            
-        } 
         updateInternals();
         updateTableDisplay();
+        rtd.updatePrevs();
     }//GEN-LAST:event_jButton2ActionPerformed
 
 

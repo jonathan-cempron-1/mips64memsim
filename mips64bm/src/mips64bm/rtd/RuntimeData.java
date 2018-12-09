@@ -125,9 +125,9 @@ public class RuntimeData {
         PrevRegsMemWbIr = regsMemWbIr;
         // resets current to blank
         //IF
-        pc = "";
+        //pc = "";
         ifIdIr = "";
-        ifIdNpc = "";
+        //ifIdNpc = "";
         //ID
         idExA = "";
         idExB = "";

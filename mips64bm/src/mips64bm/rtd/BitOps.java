@@ -278,14 +278,14 @@ public class BitOps {
         String ret = "";
         for(int i = 0; i < labelTable.size(); i++){
             if(label.equals(labelTable.get(i)[0])){
-                System.out.println("FOUNDMATCH");
+                //System.out.println("FOUNDMATCH");
                 int adr = Integer.parseInt(labelTable.get(i)[1], 16);
                 adr = adr / 4;
                 String address = Integer.toHexString(adr);
                 address = cvtHexToBin(address);
                 for(int j=address.length(); j < 26; j++)
                     address = "0"+address;
-                System.out.println(address);
+                //System.out.println(address);
                 ret = address;
             }
         }
@@ -326,7 +326,7 @@ public class BitOps {
             if(lcofw.equalsIgnoreCase(":")){
                 String[] nr = {src[i].substring(0,src[i].length()-1), ""+adr};
                 ret.add(nr);
-                //System.out.println(src[i] + adr);
+                ////System.out.println(src[i] + adr);
             }else if(src[i].equalsIgnoreCase(".data") || src[i].equalsIgnoreCase(".code"))
                 adr += 0;
             else
@@ -343,7 +343,7 @@ public class BitOps {
             if(lcofw.equalsIgnoreCase(":")){
                 String[] nr = {src[i].substring(0,src[i].length()-1), ""+adr};
                 ret.add(nr);
-                //System.out.println(src[i] + adr);
+                ////System.out.println(src[i] + adr);
             }else if(src[i].equalsIgnoreCase(".data") || src[i].equalsIgnoreCase(".code"))
                 adr += 0;
             else
