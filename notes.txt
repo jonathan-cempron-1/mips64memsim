@@ -1,0 +1,42 @@
+System notes
+
+1. can only open files, no editor
+
+2. opening file
+- converts the src code into binary
+- no sysntax check
+
+3. source code format
+- data segment always comes before code segment
+- ".data" and ".code" mnemonics are mandatory
+
+4. data segment format
+<label>: [hexbyte]
+- can have no label
+.data
+a2
+L1: 33
+44
+55
+
+5. code segment
+- isa (DADDU, DSUBU, DADDIU, LD, SD, J)
+- immediates within i type instructions has to be in bytes not labels
+- all register style allowed $t, r1, etc..
+
+6. opetration nots
+- can pipeline
+- but does not check for and not cause stall
+- dependency checking and stalling for future work
+
+6. opcode of j are not MIPS standard
+- not shifted, see readme.md
+
+7. for extending isa
+- include the new isa info in
+BitOps.java
+isaOpcodeTable
+<instrxn> <opcode type> <opcode> <func> <operation type>
+and its corresponding calculation
+- see where in PnlMemSim.java -> jButton2ActoinPerformed()
+- usually for ALU go to PnlMemSim.java -> getAluOut()
