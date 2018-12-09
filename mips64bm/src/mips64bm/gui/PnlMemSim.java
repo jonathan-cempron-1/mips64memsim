@@ -214,7 +214,9 @@ public class PnlMemSim extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -637,7 +639,7 @@ public class PnlMemSim extends javax.swing.JPanel {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -653,9 +655,9 @@ public class PnlMemSim extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -741,10 +743,16 @@ public class PnlMemSim extends javax.swing.JPanel {
         if (ib.length() > 1) {
             ib = rtd.bto.cvtHexToBin(rtd.PrevExMemIr).substring(0, 6);
         }
+        //System.out.println(ib);
         boolean isBranch = rtd.bto.getOpcodeOperationType(ib).equalsIgnoreCase("branch");
+        //System.out.println(rtd.bto.getOpcodeOperationType(ib));
+        //System.out.println(rtd.PrevExMemCond);
         if (isBranch && rtd.PrevExMemCond.equalsIgnoreCase("1")) {
+            System.out.println("branch");
             rtd.ifIdNpc = rtd.PrevExMemAluOut;
-            rtd.pc = rtd.ifIdNpc;
+            rtd.pc = Integer.toHexString(Integer.parseInt(rtd.ifIdNpc, 16));
+            rtd.ifIdIr = rtd.getMemContent(rtd.pc, 4);
+
         } else {
             int newPc = Integer.parseInt(rtd.pc, 16) + 4;
             rtd.ifIdNpc = Integer.toHexString(newPc);
@@ -776,6 +784,7 @@ public class PnlMemSim extends javax.swing.JPanel {
                         ////System.out.println("r");
                         String func = rtd.bto.getFuncFunc(rtd.bto.cvtHexToBin(rtd.exMemIr).substring(26, 32));
                         rtd.exMemAluOut = getAluOut(rtd.PrevIdExA, rtd.PrevIdExB, func);
+                        //System.out.println(func);
                     } else if (rtd.bto.getOpcodeType(ie).equalsIgnoreCase("i")) {
                         ////System.out.println("i");
                         String operator = rtd.bto.getBinOperator(rtd.bto.cvtHexToBin(rtd.exMemIr).substring(0, 6));
@@ -788,8 +797,11 @@ public class PnlMemSim extends javax.swing.JPanel {
                 } else if (rtd.bto.getOpcodeOperationType(ie).equalsIgnoreCase("branch")) {
                     ////System.out.println("branch");
                     if (rtd.bto.getOpcodeType(ie).equalsIgnoreCase("j")) {
-                        rtd.exMemAluOut = getAluOut(rtd.PrevIdExNpc, rtd.PrevIdExImm + "00", "DADDU");
+                        rtd.exMemAluOut = rtd.PrevIdExImm;
+                        System.out.println(rtd.exMemAluOut);
+                        rtd.exMemCond = "1";
                     } else if (rtd.bto.getOpcodeType(ie).equalsIgnoreCase("b")) {
+                        rtd.exMemAluOut = getAluOut(rtd.PrevIdExNpc, rtd.PrevIdExImm + "00", "DADDU");
                         rtd.exMemCond = (rtd.PrevIdExA.equalsIgnoreCase("0000000000000000")) ? "1" : "0";
                     }
                 }
@@ -801,6 +813,7 @@ public class PnlMemSim extends javax.swing.JPanel {
                     if (rtd.bto.getOpcodeOperationType(im).equalsIgnoreCase("alu")) {
                         //System.out.println("alu");
                         rtd.memWbAluOut = rtd.PrevExMemAluOut;
+                        //rtd.memExMemAluOut = rtd.PrevExMemAluOut;
                     } else if (rtd.bto.getOpcodeOperationType(im).equalsIgnoreCase("ls")) {
                         //System.out.println("ls");
                         String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0, 6)).substring(0, 1);
@@ -808,31 +821,43 @@ public class PnlMemSim extends javax.swing.JPanel {
                         int width = rtd.bto.getWidth(operatorSc);
                         //System.out.println(operatorFc);
                         if (operatorFc.equalsIgnoreCase("L")) {
-                            rtd.memWbLmd = rtd.bto.zeroExtend64(rtd.getMemContent(rtd.PrevExMemAluOut, width));
+                            String fira = ""+Integer.parseInt(rtd.PrevExMemAluOut);
+                            rtd.memWbLmd = rtd.bto.zeroExtend64(rtd.getMemContent(fira, width));
+                            //System.out.println(rtd.PrevExMemAluOut);
+                            //System.out.println(width);
+                            //System.out.println(rtd.memWbLmd);
+                            //System.out.println(rtd.getMemContent(fira, width));
                         } else if (operatorFc.equalsIgnoreCase("S")) {
                             rtd.memExMemAluOut = rtd.PrevExMemB;
                             rtd.setMemContent(rtd.PrevExMemAluOut, width, rtd.PrevExMemB);
                         }
                     }
                     //WB
-                    if (!rtd.PrevExMemIr.equalsIgnoreCase("")) {
-                        rtd.memWdIr = rtd.PrevExMemIr;
-                        String iw = rtd.bto.cvtHexToBin(rtd.PrevExMemIr).substring(0, 6);
-                        String rdref = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(16, 16 + 5);
-                        String rtref = rtd.bto.cvtHexToBin(rtd.memWdIr).substring(11, 11 + 5);
+                    if (!rtd.PrevMemWdIr.equalsIgnoreCase("")) {
+                        String wb = rtd.PrevMemWdIr;
+                        String iw = rtd.bto.cvtHexToBin(wb).substring(0, 6);
+                        //System.out.println(rtd.PrevMemWdIr);
+                        String rdref = rtd.bto.cvtHexToBin(wb).substring(16, 16 + 5);
+                        String rtref = rtd.bto.cvtHexToBin(wb).substring(11, 11 + 5);
                         ////System.out.println(ie);
                         if (rtd.bto.getOpcodeOperationType(iw).equalsIgnoreCase("alu")) {
                             ////System.out.println("alu");
                             if (rtd.bto.getOpcodeType(iw).equalsIgnoreCase("r")) {
                                 rtd.setRegContent(rdref, rtd.PrevMemWbAluOut);
+                                //System.out.println("WB R");
+                                //System.out.println(rdref);
+                                //System.out.println(rtd.PrevMemWbAluOut);
                             } else if (rtd.bto.getOpcodeType(iw).equalsIgnoreCase("i")) {
                                 rtd.setRegContent(rtref, rtd.PrevMemWbAluOut);
+                                //System.out.println("WB I");
+                                //System.out.println(rtref);
+                                //System.out.println(rtd.PrevMemWbAluOut);
                             }
                             rtd.regsMemWbIr = rtd.PrevMemWbAluOut;
                         } else if (rtd.bto.getOpcodeOperationType(iw).equalsIgnoreCase("ls")) {
                             //System.out.println("ls");
-                            String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0, 6)).substring(0, 1);
-                            String operatorSc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(rtd.memWdIr).substring(0, 6)).substring(1, 2);
+                            String operatorFc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(wb).substring(0, 6)).substring(0, 1);
+                            String operatorSc = rtd.bto.getOpcodeOperator(rtd.bto.cvtHexToBin(wb).substring(0, 6)).substring(1, 2);
                             int width = rtd.bto.getWidth(operatorSc);
                             //System.out.println(operatorFc);
                             if (operatorFc.equalsIgnoreCase("L")) {
@@ -843,6 +868,7 @@ public class PnlMemSim extends javax.swing.JPanel {
                     }
                 }
             }
+            rtd.setRegContent("00000", "0000000000000000");
         }
         updateInternals();
         updateTableDisplay();

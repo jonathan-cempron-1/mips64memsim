@@ -182,14 +182,14 @@ public class RuntimeData {
     public void setMemContent(String address, int byteLength, String content) {
         int adr = Integer.parseInt(address, 16);
         address = Integer.toHexString(adr);
-        System.out.println(address);
+        //System.out.println(address);
         content = content.substring(content.length() - (byteLength * 2), content.length());
         for (int i = 0; i < progBytes.size(); i++) {
             if (address.equalsIgnoreCase(progBytes.get(i)[1])) {
                 for (int j = 0; j < byteLength; j++) {
                     progBytes.get(i)[0] = content.substring(j, j + 2);
-                    System.out.println(content.substring(j, j + 2) + "*");
-                    System.out.println(progBytes.get(i)[0]);
+                    //System.out.println(content.substring(j, j + 2) + "*");
+                    //System.out.println(progBytes.get(i)[0]);
                     i++;
                 }
             }

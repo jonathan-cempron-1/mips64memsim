@@ -302,13 +302,16 @@ public class BitOps {
         else if(type.equalsIgnoreCase("r"))
             ret = getOperatorOpcode(brk[0]) + getRxBin(brk[2])+ getRxBin(brk[3])+ getRxBin(brk[1]) + "00000" + getOperatorFunc(brk[0]);
         else if(type.equalsIgnoreCase("i")){
-            String immed = brk[3].replace("0x", "");
+            //System.out.println(brk[3]);
+            String immed = cvtHexToBin(brk[3].replace("0x", ""));
             for(int i = immed.length(); i < 16; i++)
                 if(isHexNeg(immed))
                     immed = "1" + immed;
                 else
                     immed = "0" + immed;
             ret = getOperatorOpcode(brk[0]) + getRxBin(brk[2])+ getRxBin(brk[1]) + immed;
+            //System.out.println(ret);
+            //System.out.println(cvtBinToHex(ret));
         }
         return ret;
     }
@@ -417,6 +420,7 @@ public class BitOps {
             String lcofw =cs[i].substring(cs[i].length()-1,cs[i].length());
             if(!(cs[i].equalsIgnoreCase(".code") || lcofw.equalsIgnoreCase(":"))){
                 String opp = getInstrxnOpcodeHex(cs[i], labelTable).toUpperCase();
+                //System.out.println(opp);
                 for(int j = 0; j < 7; j += 2){
                     String address = Integer.toHexString(adr);
                     String[] temp = {opp.substring(j,j+2).toUpperCase(), address};
