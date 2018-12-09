@@ -278,9 +278,9 @@ public class BitOps {
         String ret = "";
         for(int i = 0; i < labelTable.size(); i++){
             if(label.equals(labelTable.get(i)[0])){
-                //System.out.println("FOUNDMATCH");
+                System.out.println("FOUNDMATCH");
                 int adr = Integer.parseInt(labelTable.get(i)[1], 16);
-                adr = adr / 4;
+                //adr = adr / 4;
                 String address = Integer.toHexString(adr);
                 address = cvtHexToBin(address);
                 for(int j=address.length(); j < 26; j++)
@@ -297,8 +297,10 @@ public class BitOps {
         instrxn = instrxn.replaceAll(",", " ").replaceAll("\\s+"," ");
         String brk[] = instrxn.split(" ");
         String type = getOperatorType(brk[0]);
-        if(type.equalsIgnoreCase("j"))
+        if(type.equalsIgnoreCase("j")){
             ret = getOperatorOpcode(brk[0]) + getInstrIndex(labelTable, brk[1]);
+            System.out.println(getInstrIndex(labelTable, brk[1]));
+        }
         else if(type.equalsIgnoreCase("r"))
             ret = getOperatorOpcode(brk[0]) + getRxBin(brk[2])+ getRxBin(brk[3])+ getRxBin(brk[1]) + "00000" + getOperatorFunc(brk[0]);
         else if(type.equalsIgnoreCase("i")){
