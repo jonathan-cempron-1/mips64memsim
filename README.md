@@ -13,7 +13,7 @@ sample codes:
 a code that jumps into data segment
 notice that the memory location L1 points to a data which is also an opcode if "daddu r1, r2, r3" such that when j jumps to it daddu r1,r2,r3 will be executed, even though L1 is alread outside .code segment and is inside .data segment
 
-'''
+```
 	.data
 L1:	00
 	43
@@ -26,7 +26,7 @@ start:	daddu r4, r5, r6
 	daddu r10, r11, r12
 	daddu r13, r14, r15
 	daddu r16, r17, r18
-'''
+```
 
 NOTES: 
 opcode generation for j
