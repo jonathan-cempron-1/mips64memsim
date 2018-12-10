@@ -29,10 +29,11 @@ L1: 33
 - but does not check for and not cause stall
 - dependency checking and stalling for future work
 
-6. opcode of j are not MIPS standard
+7. opcode of j are not MIPS standard
 - not shifted, see readme.md
+- effectively reduces the jump range 4bits less
 
-7. for extending isa
+8. for extending isa
 - include the new isa info in
 BitOps.java
 isaOpcodeTable
