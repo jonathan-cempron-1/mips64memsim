@@ -16,7 +16,7 @@ import mips64bm.gui.*;
  */
 public class RuntimeData {
 
-    public BitOps bto = new BitOps();
+    public BitOps bto = new BitOps(); //bitops
     LinkedList<String[]> labelTable; // each get(i) [0]label [1]hexaddres
     LinkedList<String[]> progBytes; //each get(i) [0]byte [1]hexaddress
     LinkedList<String[]> instrxnTable; // each get(i) [0]instruction string [1]hexaddress
